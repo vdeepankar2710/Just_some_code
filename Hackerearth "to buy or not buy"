@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define MAX 10000001
+#define MAXN 1e9+7
+#define pb push_back
+#define f first
+#define s second
+#define mkp make_pair
+
+pair<int, pair<int, int>> gp[MAX];
+map<pair<int, int>, int> mp;
+vector<int> adj[MAX];
+bool vis[MAX] = {false};
+void dfs(int s)
+{
+    vis[s] = true;
+    for(int i=0; i<adj[s].size(); i++)
+    {
+        if(vis[adj[s][i]]==false)
+        {
+            dfs(adj[s][i]);
+            vis[adj[s][i]] = true;
+        }
+    }
+}
+int main()
+{
+    int t; cin>>t;
+    while(t--)
+    {
+        mp.clear();
+        int n, edges; cin>>n>>edges;
+        for(int i=0; i<edges; i++)
+        {
+            int x, y, cost; cin>>x>>y>>cost;
+            gp[i] = make_pair(cost, make_pair(x, y));
+            mp.insert(mkp(mkp(x, y), cost));
+            mp.insert(mkp(mkp(y, x), cost));
+        }
+        
+        int m; cin>>m;
+        int yes=0;
+        for(int u=0; u<m; u++)
+        {
+            memset(vis, 0, sizeof(vis));
+            for(int k=0; k<MAX; k++)
+            adj[k].clear();
+            
+            int x, y;
+            cin>>x>>y;
+            int e = mp[mkp(x, y)];
+            for(int j=0; j<edges; j++)
+            {
+                if(gp[j].f<e)
+                {
+                    adj[gp[j].s.f].pb(gp[j].s.s);
+                    adj[gp[j].s.s].pb(gp[j].s.f);
+                }
+            }
+            dfs(x);
+            if(!vis[y])
+            yes++;
+        }
+        int g= __gcd(yes, m);
+        cout<<yes/g<<"/"<<m/g<<endl;
+    }
+}
