@@ -1,0 +1,67 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define MAX 1000003
+ll power(ll x, ll y, ll p)
+{
+    ll res=1;
+    x = x%p;
+    while(y>0)
+    {
+        if(y&1) res = (res*x)%p;
+        y/=2;
+        x = (x*x)%p;
+    }
+    return res;
+}
+
+int main()
+{
+    ll seive[MAX]={0};
+    seive[0] = 1;
+    seive[1] = 1;
+    for(ll i = 2; i<MAX; i++)
+    {
+        if(seive[i]==0)
+        {
+            for(ll j = i*2; j<MAX; j+=i)
+            {
+                if(seive[j]==0)
+                seive[j] = i;
+            }
+            seive[i] = i;
+        }
+    }
+    int t; cin>>t;
+    while(t--)
+    {
+        ll n, m, k;
+        cin>>n>>m>>k;
+        map<ll, ll> mp;
+        ll arr[n];
+        for(ll i=0; i<n; i++)
+        cin>>arr[i];
+        ll ans=1;
+        for(ll i=0; i<n; i++)
+        {
+            ll j=arr[i];
+            map <ll, ll> mp_temp;
+            while(j>1)
+            {
+                ll fac = seive[j];
+                mp_temp[fac]++;
+                j/=fac;
+            }
+            for(auto it:mp_temp)
+            {
+                mp[it.first] = max(mp[it.first], it.second);
+            }
+        }
+        for(auto im:mp)
+        {
+                ans = (ans*power(im.first, im.second, m))%m;
+        }
+        ans = power(ans, k, m);
+        cout<<ans<<endl;
+    }
+}
