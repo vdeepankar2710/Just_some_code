@@ -1,0 +1,87 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define MAX 100001
+#define MAXN 1000000007
+#define pb push_back
+#define f first
+#define s second
+#define INF 2e18
+ 
+ll tree[100*MAX];
+void build(int node, ll A[], int start, int end)
+{
+    if(start==end)
+    {
+        tree[node] = A[start];
+    }
+    else
+    {
+        int mid = (start+end)/2;
+        build(2*node, A, start, mid);
+        build(2*node+1, A, mid+1, end);
+        tree[node] = max(tree[2*node],tree[2*node+1]);
+    }
+}
+ 
+void update(int node, ll A[], int start, int end, int idx, ll val)
+{
+    if(start==end)  
+    {
+        A[idx] = val;
+        tree[node] = val;
+    }
+    else 
+    {
+        int mid = (start+end)/2;
+        if(idx<=mid)
+            update(2*node, A, start, mid, idx, val);
+            
+        else    update(2*node+1, A, mid+1, end, idx, val);
+        
+        tree[node] = max(tree[2*node] , tree[2*node+1]);
+    }
+}
+int query(int node, int start, int end, ll x, int l)
+{
+    int res;
+    if(tree[node]<x)    return -1;
+    if(end<l)   return -1;
+    if(start==end)  return start;
+    
+    int mid = (start+end)/2;
+    res = query(2*node, start, mid, x, l);
+    if(res==-1)
+    res = query(2*node+1, mid+1, end, x, l);
+    return res;
+}
+int main()
+{
+    int n, m;    cin>>n>>m;
+    ll A[n+1];
+    for(int i=1; i<n+1; i++)
+    cin>>A[i];
+    build(1, A, 1, n);
+    while(m--)
+    {
+        int x; cin>>x;
+        if(x==1)
+        {
+            int in;
+            ll v;
+            cin>>in>>v;
+            update(1, A, 1, n, in+1, v);
+        }
+        else 
+        {
+            ll y;
+            int l;
+            cin>>y>>l;
+            int ans = query(1, 1, n, y, l+1);
+            if(ans==-1) cout<<-1<<endl;
+            else
+            cout<<ans-1<<endl;
+        }
+    }
+    return 0;
+}
