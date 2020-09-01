@@ -8,7 +8,7 @@ using namespace std;
 #define s second
 #define INF 2e18
  
-ll tree[100*MAX];
+ll tree[10*MAX];
 void build(int node, ll A[], int start, int end)
 {
     if(start==end)
