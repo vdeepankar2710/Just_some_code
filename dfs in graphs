@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define MAX 100001
+#define MAXN 1000000007
+#define pb push_back
+#define f first
+#define s second
+#define INF 2e18
+#define PII pair<int,int>
+vector<vector<int>> adj;
+vector<bool> vis;
+
+void init(int n)
+{
+    adj.resize(n+1);
+    vis.assign(n+1, false);
+}
+void dfs(int node)
+{
+    vis[node] = true;
+    for(int i:adj[node])
+    {
+        if(!vis[i])
+        dfs(i);
+    }
+}
+int main()
+{
+    int n, p; cin>>n>>p;
+    init(n);
+    int x, y;
+    for(int i=0; i<p; i++)
+    {
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    return 0;
+}
+
+
