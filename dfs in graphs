@@ -13,6 +13,8 @@ vector<bool> vis;
 
 void init(int n)
 {
+    adj.clear();
+    vis.clear();
     adj.resize(n+1);
     vis.assign(n+1, false);
 }
