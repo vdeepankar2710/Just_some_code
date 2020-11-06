@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define MAX 100001
+#define MOD 1000000007
+#define pb push_back
+#define f first
+#define s second
+#define INF 2e18
+#define PII pair<int,int>
+#define PLL pair<ll, ll>
+
+vector<vector<int>> adj;
+vector<bool> vis;
+void init(int n)
+{
+    adj.clear();
+    vis.clear();
+    adj.resize(n+1);
+    vis.assign(n+1,false);
+}
+
+int main()
+{
+    int t; cin>>t;
+    while(t--)
+    {
+        int n; cin>>n;
+        init(n);
+    }
+    return 0;
+}
