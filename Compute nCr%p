@@ -3,6 +3,7 @@ using namespace std;
 #define ll long long
 #define MAX 100001
 #define MOD 1000000007
+// #define MOD 998244353
 #define pb push_back
 #define f first
 #define s second
