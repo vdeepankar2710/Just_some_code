@@ -9,7 +9,8 @@ using namespace std;
 #define s second
 #define INF 2e18
 #define PII pair<int,int>
-vector<ll> fact
+#define PLL pair<long long, long long>
+vector<ll> fact;
 void init()
 {
     fact.resize(MAX);
