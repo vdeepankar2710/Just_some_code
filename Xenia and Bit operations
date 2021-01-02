@@ -1,0 +1,92 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define MOD 1000000007
+// #define MOD 998244353
+#define pb push_back
+#define f first
+#define s second
+#define INF 2e18
+#define PII pair<int,int>
+#define PLL pair<long long, long long>
+
+int tree[10*MAX];
+void init()
+{
+    memset(tree, 0, sizeof(tree));
+}
+void build(int node, int arr[], int start, int end, int k)
+{
+	if(start==end)
+	{
+		tree[node] = arr[start];
+		
+	}	 
+	else
+	{
+		int m = (start+end)/2;
+		build(2*node, arr, start, m, k^1);
+		build(2*node+1, arr, m+1, end, k^1);
+		
+		if(k==1)
+		tree[node] = (tree[2*node]|tree[2*node+1]);
+		else 
+		tree[node] = (tree[2*node]^tree[2*node+1]);
+		
+	} 
+}
+void update(int node, int p, int b, int start, int end,  bool k)
+{
+    if(start==end){
+    	tree[node] = b;
+    	
+    } 
+    else
+    {
+        int m = (start+end)/2;
+        if(p<=m)
+        update(2*node, p, b, start, m, k^1);
+        else
+        update(2*node+1, p, b, m+1, end, k^1);
+        
+        if(k==1)
+		tree[node] = (tree[2*node]|tree[2*node+1]);
+		else 
+		tree[node] = (tree[2*node]^tree[2*node+1]);
+		
+    }
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int n, m; cin>>n>>m;
+    bool flag=0;
+    if(n%2)		flag=1;
+    n = pow(2, n);
+    int arr[n+1];
+    init();
+    for(int i=1; i<=n; i++)
+    {
+        cin>>arr[i];
+    }
+    build(1, arr, 1, n, flag);
+    // cout<<arr[1]
+    for(int i=0; i<m; i++)
+    {
+        int p, q;
+        cin>>p>>q;
+        update(1, p, q, 1, n, flag);
+        cout<<tree[1]<<endl;
+        
+        
+        
+	    // for(int i=1; i<=100; i++)
+	    // cout<<tree[i]<<" ";
+	    // cout<<endl;
+    }
+    return 0;
+}
