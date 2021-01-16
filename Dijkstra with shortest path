@@ -1,0 +1,80 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define MOD 1000000007
+// #define MOD 998244353
+#define pb push_back
+#define f first
+#define s second
+#define INF 2e18
+#define PII pair<int,int>
+#define PLL pair<long long, long long>
+
+vector<vector<PII>> adj;
+vector<bool> vis;
+vector<int> parent, dis;
+
+void init(int n)
+{
+	adj.resize(n+1);
+	vis.assign(n+1, 0);
+	parent.assign(n+1, 0);
+	dis.assign(n+1, MOD);
+}
+void dijkstra(int src)
+{
+	priority_queue<PII, vector<PII>,greater<PII>> pq;
+	pq.push({0, src});
+	dis[src] = 0;
+	parent[src] = -1;
+	while(!pq.empty())
+	{
+	    int p = pq.top().s;
+	    pq.pop();
+	    for(auto it:adj[p])
+	    {
+	        int to = it.f, w = it.s;
+	        if(dis[to]>dis[p]+w)
+	        {
+	            dis[to]  = dis[p]+w;
+	            pq.push({dis[to], to});
+	            parent[to] = p;
+	        }
+	    }
+	}
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+	int t; cin>>t;
+	while(t--)
+	{
+		int n, m; cin>>n>>m;
+		init(n);
+		int x, y, w;
+		for(int i=0; i<m; i++)
+		{
+			cin>>x>>y>>w;
+            adj[x].pb({y, w});
+            adj[y].pb({x, w});
+		}
+    dijkstra(1); //source vertex
+		int to = ; //detination vertex
+		vector<int> path;
+		while(to!=-1)
+		{
+			path.pb(to);
+			to = parent[to];
+		}
+		for(auto i:path)
+		{
+			cout<<i<<" ";
+		}
+		cout<<endl;
+	}
+	return 0;
+}
