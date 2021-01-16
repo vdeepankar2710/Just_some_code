@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define MOD 1000000007
+// #define MOD 998244353
+#define pb push_back
+#define f first
+#define s second
+#define INF 2e18
+#define PII pair<int,int>
+#define PLL pair<long long, long long>
+
+vector<vector<int>> adj;
+vector<bool> vis;
+vector<int> parent;
+
+void init(int n)
+{
+	adj.resize(n+1);
+	vis.assign(n+1, 0);
+	parent.assign(n+1, 0);
+	
+}
+void bfs(int src)
+{
+	queue<int> q;
+	q.push(src);
+	vis[src] = 1;
+	parent[src] = -1;
+	while(!q.empty())
+	{
+		int p = q.front();
+		q.pop();
+		for(auto to:adj[p])
+		{
+			if(!vis[to])
+			{
+				parent[to] = p;
+				vis[to] = 1;
+				q.push(to);
+			}
+		}
+	} 
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+	int t; cin>>t;
+	while(t--)
+	{
+		int n, m; cin>>n>>m;
+		int x, y;
+		init(n);
+		for(int i=0; i<m; i++)
+		{
+			cin>>x>>y;
+			adj[x].pb(y);
+			adj[y].pb(x);
+		}
+		bfs(1); // the source node
+		int to = 5; //the destination node
+		vector<int> path;
+		while(to!=-1)
+		{
+			path.pb(to);
+			to = parent[to];
+		}
+		for(auto i:path)
+		{
+			cout<<i<<" ";
+		}
+		cout<<endl;
+	}
+	return 0;
+}
