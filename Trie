@@ -1,0 +1,81 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define MOD 1000000007
+// #define MOD 998244353
+#define pb push_back
+#define F first
+#define S second
+#define INF 2e18
+#define PII pair<int,int>
+#define PLL pair<long long, long long>
+
+const int N = 10*MAX;
+
+struct Trie
+{
+	struct Trie * children[10] = {NULL};
+	int vis = 0;	
+};
+struct Trie *root,  string &s)
+{
+	struct Trie *pNode = root;
+	
+	for(int i=0; i<(int)s.length(); i++)
+	{
+		int in = s[i] - 'a';
+		if(pNode->children[in] == NULL)
+			pNode->children[in] = new Trie;
+	    pNode = pNode->children[in];
+	    
+	    if(pNode->vis==1) // for large upcoming strings
+	        return false;
+	}
+	pNode->vis = 1;
+	for(int i=0; i<10; i++)
+	{
+	    if(pNode->children[i]!=NULL)
+	    return false;
+	}
+	return true;
+}
+
+int main()
+{
+    int n; cin>>n;
+    bool a = 1;
+    struct Trie *root = new Trie;
+    
+    for(int i=0; i<n; i++)
+    {
+        string s; cin>>s;
+        bool ans = insert(root, s);
+        
+        // cout<<ans<<endl;
+        if(ans)     continue;
+        else 
+        {
+            cout<<"BAD SET\n";
+            cout<<s<<endl;
+            a = 0;
+            break;
+        }
+    }
+    if(a)   cout<<"GOOD SET\n";
+    return 0;
+}
+
+//Problem is-Given the number of strings and then the strings, find that a given string is a prefix of a string in the same set or not.
+//If yes the then print "GOOD SET" else print "BAD SET".
+//Testcase - 4
+//aab
+//aac
+//abcghgh
+//aa
+//4
+//aab
+//aac
+//aacghgh
+//aabghgh
