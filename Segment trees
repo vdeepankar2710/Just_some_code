@@ -42,6 +42,49 @@ void update(int node, ll A[], int start, int end, int idx, ll val)
         tree[node] = max(tree[2*node] , tree[2*node+1]);
     }
 }
+int query(int node, int start, int end, int l, int r)
+{
+	if(start>r || end<l)
+	return 0;
+	
+	if(start>=l && end<=r)
+	return tree[node];
+	 
+	int mid = (start+end)/2;
+	
+	return (query(2*node, start, mid, l, r) + query(2*node+1, mid+1, end, l, r));
+}
+
+int find_first(int node, int x, int start, int end, int l, int r)
+{
+	if(start>r || end<l)	return -1;
+	if(start>=l && end<=r)
+	{
+		if(tree[node]<=x)	return -1;
+		
+		int mid;
+		while(start!=end)
+		{
+			mid = (start+end)/2;
+			if(tree[2*node]>x)
+			{
+				node = 2*node;
+				end = mid;
+			}
+			else
+			{
+				node = 2*node+1;
+				start = mid;
+			}
+		}
+		return start;
+	}
+	int m = (start+end)/2;
+	
+	int k = find_first(2*node, x, start, m, l, r);
+	if(k != -1)	return k;
+	return find_first(2*node+1, x, m+1, end, l, r);
+}
 int query(int node, int start, int end, ll x, int l)
 {
     int res;
