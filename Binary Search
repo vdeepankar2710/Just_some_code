@@ -1,0 +1,18 @@
+bool search(int x[], int n, int k)  // p returns the converging index at the end of search
+{
+    int p = 0; // p is the current element index
+    for (int a = n; a >= 1; a /= 2) 
+    {
+        while (p+a < n && x[p+a] <= k) p += a;
+    }
+    return x[p] == k;
+}
+// OR
+while(r-l>1) // l returns the converging index at the end of search
+{    
+  int m = (l+r)/2;
+  if(a[m]>k)
+ 		r = m;
+  else
+    l = m;	
+}
