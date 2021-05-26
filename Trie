@@ -79,3 +79,67 @@ int main()
 //aac
 //aacghgh
 //aabghgh
+
+************************************************************************************************************************************************************************
+// Another problem = count the number of pairs whose XOR is less than a given number k
+const int N = 100*MAX;
+
+struct Trie
+{
+	Trie *child[2];
+	int cnt=0;
+	Trie()
+	{
+		child[1] = child[0] = NULL;
+	}
+};
+void insert(Trie *root, int element)
+{
+	for(int i=32; i>=0; i--) //we build the Trie by looking at the number from the most significant bit (rightmost bit)
+	{
+		bool x = element&(1<<i);
+		if(!root->child[x])
+		{
+			root->child[x] = new Trie();
+			root->child[x]->cnt++;
+		}
+		root = root->child[x];
+	}
+}
+int cntSmaller(Trie *root, int ele, int k)
+{
+	int cntSmall=0;
+	for(int i=32; i>=0 && root; i--)
+	{
+		bool x = ele&(1<<i);
+		bool y = k&(1<<i);
+		if(y)
+		{
+			if(root->child[x])
+			{
+				cntSmall += (root->child[x]->cnt);
+				
+			}
+			root = root->child[x^1];   // to avoid repetitions in counting
+		}
+		else
+		{
+			root = root->child[x];
+		}
+	}
+	return cntSmall;
+}
+int final(vector<int>arr, int n, int k)
+{
+	int ans=0;
+	Trie *root = new Trie();
+	for(int i=0; i<n; i++)
+	{
+		ans += cntSmaller(root, arr[i], k);
+		insert(root, arr[i]);
+	}
+	return ans;
+}
+//  Here will be the main function
+
+
