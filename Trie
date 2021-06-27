@@ -141,5 +141,89 @@ int final(vector<int>arr, int n, int k)
 	return ans;
 }
 //  Here will be the main function
+-------------------------------------------------------------------------------------------------------------------------------------------------------
 
+//Problem- Compute the max xor of a pair of elements in an array
+// othekey is the other number already inserted in the trie taking with whome the XOR is max
+typedef struct Trie
+{
+	struct Trie *child[2];
+	Trie()
+	{
+		child[1] = child[0] = NULL;
+	}
+} TrieNode;
+
+void insert(TrieNode *root, int key)
+{
+	TrieNode *pNode = root;
+	 
+	for(int i=32; i>=0; i--)
+	{
+		bool bit = key&(1<<i);
+		if(!pNode->child[bit])
+			pNode->child[bit] = new TrieNode;
+			
+		pNode = pNode->child[bit];
+	}
+}
+int query(TrieNode *root, int key, int &otherkey)
+{
+	int XOR = 0;
+	TrieNode *pNode = root;
+	
+	for(int i=32; i>=0; i--)
+	{
+		bool bit = key&(1<<i);
+		if(pNode->child[!bit])
+		{
+			XOR |= (1<<i);
+			if(!bit)	otherkey |= (1<<i);
+			else otherkey &= ~(1<<i);
+			
+			pNode = pNode->child[!bit];
+		}
+		else
+		{
+			if(bit)	otherkey |= (1<<i);
+			else otherkey &= ~(1<<i);	
+			pNode= pNode->child[bit];		
+		}
+	}
+	return XOR;
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);  //remove in interactive problems
+	int t; cin>>t;
+	while(t--)
+	{
+		int n; cin>>n;
+		int a[n];
+		for(int i=0; i<n; i++)
+			cin>>a[i];
+		
+		TrieNode *root = new TrieNode;
+		
+		int maxx=-1;
+		insert(root,a[0]);
+		
+		for(int i=1; i<n; i++)
+		{
+			int otherkey=0;
+			int q = query(root, a[i], otherkey) ;
+			
+			if(q > maxx)		maxx= q;
+			
+			insert(root, a[i]);
+		}
+		cout<<maxx<<endl;
+		
+		
+	}
+
+	return 0;
+}
 
