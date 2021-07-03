@@ -16,3 +16,12 @@ while(r-l>1) // l returns the converging index at the end of search
   else
     l = m;	
 }
+int l=0, r=n-1, mid;     // mid returns the index if it is present in the array else returns the next greater one
+	while(l<=r)
+	{
+		mid=  (l+r)/2;
+		
+		if(a[mid]>=k)	r = mid-1;
+		else l = mid+1;
+		
+	}
