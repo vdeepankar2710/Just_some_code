@@ -1,0 +1,26 @@
+//Problem link: https://leetcode.com/problems/decode-ways/
+
+class Solution {
+public:
+    int func(vector<int> &dp,int idx, int len, string & s)
+    {
+        if(idx==len)    return 1;
+        if(idx>len || s[idx]=='0')	return 0;
+        if(dp[idx]!=-1) return dp[idx];
+        
+        int &res = dp[idx];
+        res = func(dp,idx+1, len, s);
+
+        if(((s[idx]=='2' && s[idx+1]<='6') || s[idx]=='1') && idx+1<=len)
+            return res += func(dp, idx+2, len, s);
+        
+        dp[idx] = res;
+        return res;
+    }
+    int numDecodings(string s) 
+    {
+        int n = (int)s.length();
+        vector<int> dp(n+1, -1);
+        return func(dp, 0, n, s);
+    }
+};
