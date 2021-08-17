@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+#define inf 2e18
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x.size())
+
+const int N = 1e3+3;
+
+int mat[N][N], vis[N][N];
+int drow[] = {0, 1, 0, -1};
+int dcol[] = {-1, 0, 1, 0};
+// int drow[] = {0, 0, 1, 1, 1, -1, -1, -1};  // use when want to
+// int dcol[] = {1, -1, 0, -1, 1, 0, -1, 1};  // traverse diagonally also
+
+bool is_safe(int x, int y, int n, int m)
+{
+	return (x<n && y<m && x>=0 && y>=0 && vis[x][y]==0);
+}
+
+void dfs(int x, int y, int n, int m)
+{
+	vis[x][y]=1;
+	cout<<mat[x][y]<<" ";
+	for(int i=0; i<4; i++)
+	{
+		if(is_safe(x+drow[i], y+dcol[i], n, m))
+		dfs(x+drow[i], y+dcol[i], n, m);
+	}
+}
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);	
+	
+	int n,m;	
+	cin>>n>>m;
+	
+	for(int i=0; i<n; i++)
+	for(int j=0; j<m; j++)vis[i][j] = 0;
+
+	
+	for(int i=0; i<n; i++)
+	for(int j=0; j<m; j++)cin>>mat[i][j];
+	
+	dfs(0, 0, n, m);
+	
+	return 0;
+}
