@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+#define inf 2e18
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x.size())
+
+const int N = 1e5 + 10 ;
+vector<int> v ;
+// v is a vector to th enumbers whose sum of the square of digits less than a given number x
+void solve(int x){
+    queue<pair<int,int>> q ;
+    q.push({0,0}) ;
+    while(v.size() <= N){
+        auto [cur,sum] = q.front() ;
+        if(sum) v.push_back(cur) ;
+        q.pop() ;
+        for(int i = 0 ; i < 10 ; i++){
+	    if(sum == 0 && i == 0) continue ;
+            if(sum + i*i <= x){
+                q.push({(cur*10 + i)%mod , sum + i*i}) ;
+            }
+        }
+    }
+}
+
+int32_t main(){
+    int x ;
+    cin >> x ;
+    solve(x) ;
+    // series stored in `ser`
+    for(int i = 0 ; i < 100 ; i++) cout << v[i] << '\n' ;
+    return 0 ;
+}
+
+
+
+// int main()
+// {
+	// ios_base::sync_with_stdio(false);
+	// cin.tie(NULL);
+	// int t; cin>>t;
+	// while(t--)
+	// {
+		// solve();
+// 		
+// 		
+// 		
+// 		
+// 		
+	// }
+// 
+// 
+// return 0;
+// }
