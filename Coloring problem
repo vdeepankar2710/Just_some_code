@@ -1,0 +1,126 @@
+//Problem link -  https://www.codechef.com/problems/FILLMTR
+//Solution - https://www.codechef.com/viewsolution/50466661
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+// #define inf 2e18
+#define inf 2e9
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x.size())
+ 
+const int N = 2e5+5;
+
+vector<vector<pii>>adj;
+vector<int>vis, color;
+
+void init(int n)
+{
+	adj.clear();
+	adj.resize(n+1);
+	vis.clear();
+	vis.assign(n+1, 0);
+	color.clear();
+	color.assign(n+1, -1);
+}
+
+bool dfs(int node)
+{
+	vis[node] = 1;
+	
+	for(auto edge:adj[node])
+	{
+		int to=edge.fi, val=edge.se;
+		if(vis[to]==0)
+		{
+			color[to] = (val==0)?color[node]:color[node]^1;
+			if(!dfs(to)) return false;
+		}
+		// cout<<to<<" "<<color[to]<<"\n";
+		if((color[node]!=color[to] && val==0) || (color[node]==color[to] && val==1))
+			
+			{
+				// cout<<node<<" "<<to<<endl;
+				return false;	
+			}
+			
+	}
+	return true;
+}
+
+void solve()
+{
+	int n, q;
+	cin>>n>>q;
+	init(n);
+	int x, y, val;
+	vector<pair<pii, int>> edges;
+	
+	for(int i=0; i<q; i++)
+	{
+		cin>>x>>y>>val;
+		edges.pb({{x, y}, val});
+	}
+	map<pii, int> mp;
+	for(int i=0; i<q; i++)
+	{
+		x = edges[i].fi.fi; y = edges[i].fi.se; val = edges[i].se;
+		if(x==y && val==1)	
+		{
+			cout<<"no\n";
+			return;
+		}
+		else if(x==y && val==0)continue;
+		
+		if(mp.find({x, y})!=mp.end() && mp[{x, y}]!=val)
+		{
+			cout<<"no\n";
+			return;
+		}
+		else if(mp.find({y,x})!=mp.end() && mp[{y, x}]!=val)
+		{
+			cout<<"no\n";
+			return;
+		}
+		
+		adj[x].pb({y, val}); adj[y].pb({x, val});
+		
+		mp[{x, y}] =val;
+	}
+	bool bip=1;
+	for(int i=1; i<=n; i++)
+	{
+		if(vis[i]==0)
+		{
+			color[i] = 1;
+			bip&=dfs(i);
+		}
+	}
+	if(bip)	cout<<"yes\n";
+	else cout<<"no\n";
+}
+
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);  //remove in interactive problems
+	
+	int t; cin>>t;
+	while(t--)
+	{
+		solve();
+	}
+	
+ 
+	return 0;
+}
