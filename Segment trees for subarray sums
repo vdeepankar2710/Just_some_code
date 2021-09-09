@@ -1,0 +1,113 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+#define inf 2e18
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x.size())
+
+const int N = 10*MAX;
+
+
+typedef struct Node
+{
+	int pSum = -mod,  sSum=-mod, tSum=-mod,  subSum =-mod;
+} segNode;
+
+int a[N];
+segNode tree[N];
+
+segNode Merge(segNode left, segNode right)
+{
+	segNode par;
+	par.pSum = max(left.pSum, left.tSum+right.pSum);
+	par.sSum = max(right.sSum, right.tSum+left.sSum);
+	par.tSum = left.tSum+right.tSum;
+	par.subSum = max({left.subSum, right.subSum,  left.sSum + right.pSum});
+	return par;
+}
+
+void build(int node, int start, int end)
+{
+	if(start==end)
+	{
+		tree[node].pSum = a[end];
+		tree[node].sSum = a[end];
+		tree[node].tSum = a[end];
+		tree[node].subSum = a[end];
+	}
+	else
+	{
+		int mid = (start+end)/2;
+		build(2*node, start, mid);
+		build(2*node+1, mid+1, end);
+		tree[node] = Merge(tree[2*node], tree[2*node+1]);
+	}
+}
+void update(int node, int start, int end, int idx, int val)
+{
+	if(start==end)
+	{
+		tree[node].pSum = val;
+		tree[node].sSum = val;
+		tree[node].tSum = val;
+		tree[node].subSum = val;
+		a[idx] = val;
+		return;
+	}
+	int mid = (start+end)/2;
+	if(idx<=mid)
+	update(2*node, start, mid, idx, val);
+	else 
+	update(2*node+1, mid+1, end, idx, val);
+	
+	tree[node] = Merge(tree[2*node], tree[2*node+1]);
+}
+
+segNode query(int node, int start, int end, int l, int r)
+{
+	segNode par;
+	
+	if(start>r || end<l) return par;
+	
+	if(start>=l && end<=r)	return tree[node];
+	
+	int mid = (start+end)/2;
+	segNode p1 = query(2*node, start, mid, l, r);
+	segNode p2 = query(2*node+1, mid+1, end, l, r);
+	
+	return par = Merge(p1, p2);
+}
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+    	cin.tie(NULL);	
+			
+	int t; cin>>t;
+	while(t--)
+	{
+		int n; cin>>n;
+		for(int i=1; i<=n; i++)cin>>a[i];
+		
+		build(1, 1, n);
+// 		update(1, 1, n, 2, 232);
+		cout<<query(1, 1, n, 2, 5).subSum<<"\n";
+		for(int i=1; i<=10; i++)
+		{
+		    cout<<tree[i].pSum<<" "<<tree[i].sSum<<" "<<tree[i].tSum<<" "<<tree[i].subSum<<endl;
+		}
+		
+			
+	}
+				
+    return 0;
+}
