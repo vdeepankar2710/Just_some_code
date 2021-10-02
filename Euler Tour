@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+#define inf 2e18
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x.size())
+ 
+const int N = 2e5+5;
+vector<vector<int>>adj(100);
+vector<int> vis(100,0), euler;
+
+
+void dfs(int node)
+{
+	vis[node] =1;
+	euler.pb(node);
+	for(int to:adj[node])
+	{
+		if(vis[to]==0)dfs(to);
+	}
+	euler.pb(node);
+}
+
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);  //remove in interactive problems
+	
+	int t; cin>>t;
+	while(t--)
+	{
+		int n, m, x, y; cin>>n>>m;
+		for(int i=0; i<=n; i++)vis[i] = 0;
+		
+		for(int i=0; i<m; i++)
+		{
+			cin>>x>>y;
+			adj[x].pb(y);
+			adj[y].pb(x);
+		}
+		dfs(1);
+		for(int i:euler)	cout<<i<<" ";
+		cout<<endl;
+	}
+	
+	return 0;
+}
