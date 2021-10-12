@@ -47,3 +47,37 @@ int main()
     
     return 0;
 }
+struct FenwickTree			// as a structure.
+{
+	vector<int> BIT;
+	int n; 
+	
+	FenwickTree(int n)
+	{
+		this->n = n;
+		BIT.assign(N, 0);
+ 	}
+
+	void update(int idx, int val)
+	{
+		for(; idx<=n; idx+=(idx & -idx))
+		BIT[idx] +=val;
+	}
+	
+	void range_update(int l, int r, int val)
+	{
+		update(l, val);
+		update(r+1, -val);
+	}
+	
+	int query(int idx)
+	{
+		int sum=0;
+		for(; idx>0; idx-=(idx & -idx))
+		{
+			sum+=BIT[idx];
+		}
+		return sum;
+	}
+};
+
