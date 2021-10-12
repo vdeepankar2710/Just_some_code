@@ -1,0 +1,93 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+#define inf 2e18
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x.size())
+
+const int N = 2e5+5;
+const ll p = 31;
+vector<ll> p_pow(N);
+
+ll power(ll x, ll y)	//computes x^y
+{
+    ll res=1;
+    x = x%mod;
+    while(y>0)
+    {
+        if(y%2) res = (res*x)%mod;
+        y/=2;
+        x = (x*x)%mod;
+    }
+    return res;
+}
+ll modInv(ll n)
+{
+    return power(n, mod-2);
+}
+void precompute()
+{
+	p_pow[0] = 1;
+	for(int i=1; i<N; i++)
+	p_pow[i] = (p_pow[i-1]*p)%mod;
+}
+ll compute_hash(string &s)
+{
+	ll hash=0;
+	for(int i=0; i<sz(s); i++)
+	{
+		ll temp = s[i] -'a'+1;
+		hash = (hash+temp*p_pow[i])%mod;
+	}
+	return hash;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+    	cin.tie(NULL);	  //remove in interactive problems
+			
+	int t; t=1;
+	precompute();
+	while(t--)
+	{
+		string par, text;
+		cin>>par>>text;
+		vector<ll> hash_par(N);
+		ll temp;
+		for(int i=0; i<sz(par); i++)
+		{
+			temp = par[i] - 'a'+1;
+			hash_par[i+1] = (hash_par[i]+ temp*p_pow[i])%mod;
+		}
+		
+		ll hash_text = compute_hash(text);
+		// for(int i=0; i<sz(par); i++)cout<<hash_par[i]<<" ";
+		// cout<<hash_text<<endl;
+		
+		ll cnt=0;
+		for(int i=0; i+sz(text)-1<sz(par); i++)
+		{
+			temp = (hash_par[i+sz(text)]+ mod- hash_par[i])%mod;
+			
+			if( temp == (hash_text*p_pow[i])%mod)
+			{
+				cnt++;
+
+			}
+			
+		}
+		cout<<cnt<<endl;
+		
+	}
+				
+    return 0;
+}
