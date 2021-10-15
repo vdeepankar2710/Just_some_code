@@ -67,18 +67,21 @@ int main()
     return 0;
 }
 
-//Problem is-Given the number of strings and then the strings, find that a given string is a prefix of a string in the same set or not.
-//If yes the then print "GOOD SET" else print "BAD SET".
+//Problem is-Given a set of strings we need to determine that a each string is not a prefix of any of the strings, then it a "GOOD SET" else it is a "BAD SET".
 //Testcase - 4
 //aab
 //aac
 //abcghgh
 //aa
+//verdict = "BAD SET"
+
 //4
 //aab
 //aac
 //aacghgh
 //aabghgh
+//verdict="GOOD SET"
+
 
 ************************************************************************************************************************************************************************
 // Another problem = count the number of pairs whose XOR is less than a given number k
