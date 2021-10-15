@@ -19,7 +19,7 @@ struct Trie
 	struct Trie * children[10] = {NULL};
 	int vis = 0;	
 };
-struct Trie *root,  string &s)
+bool insert(struct Trie *root,  string &s)
 {
 	struct Trie *pNode = root;
 	
