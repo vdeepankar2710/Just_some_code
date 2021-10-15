@@ -147,7 +147,7 @@ int final(vector<int>arr, int n, int k)
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //Problem- Compute the max xor of a pair of elements in an array
-// othekey is the other number already inserted in the trie taking with whome the XOR is max
+// othekey is the other number already inserted in the trie taking with whom the XOR is max
 typedef struct Trie
 {
 	struct Trie *child[2];
