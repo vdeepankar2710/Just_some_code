@@ -102,3 +102,85 @@ int main()
 	}
 	
 }
+
+//--------------------------------------------------------------------------------Another Approach---------------------------------------------------------------------------------
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+#define inf 2e18
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x.size())
+ 
+const int N = 2e5+5;
+vector<vector<int>>adj;
+vector<int>indeg, topo;
+
+void init(int n)
+{
+	indeg.clear();
+	indeg.assign(n+1, 0);
+	adj.clear();
+	adj.resize(n+1);
+	topo.clear();
+	// .assign(n+1,0);
+}
+void solve()
+{
+	int n, m;cin>>n>>m;
+	init(n);
+	int x, y;
+	for(int i=0;i<m; i++)
+	{
+		cin>>x>>y;
+		indeg[y]++;		
+		adj[x].pb(y);
+	}
+	priority_queue<int, vector<int>, greater<int>> pq;
+	for(int i=1; i<=n; i++)
+	if(indeg[i]==0)	pq.push(i);	
+	
+	while(sz(pq))
+	{
+		int p = pq.top();
+		topo.pb(p);
+		pq.pop();
+		for(int i:adj[p])
+		{
+			indeg[i]--;
+			if(indeg[i]==0)	pq.push(i);
+		}
+	}
+	
+	if(sz(topo)!=n)
+	{
+		cout<<-1<<endl;
+		return;
+	}
+	
+	// reverse(all(topo));
+	for(int i:topo)cout<<i<<" ";
+	cout<<endl;
+	
+	
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);  //remove in interactive problems
+	
+	int t; t=1;
+	while(t--)
+	{
+		solve();
+	}
+	
+}
