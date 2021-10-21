@@ -26,8 +26,9 @@ void dfs(int node)
 	for(int to:adj[node])
 	{
 		if(vis[to]==0)dfs(to);
+		euler.pb(node);
 	}
-	euler.pb(node);
+	
 }
 
 
