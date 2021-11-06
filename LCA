@@ -1,0 +1,118 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+#define inf 2e18
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x.size())
+
+const int N = 1e6+5;
+vector<vector<int>> adj;
+vector<int>vis, euler, height, segtree(N), first;
+
+void init(int n)
+{
+	adj.resize(n+1);
+	vis.assign(n+1, 0);
+	euler.pb(0);
+	first.assign(n+1, 0);
+	height.assign(n+1, 0);
+}
+void dfs(int node, int h)
+{
+	vis[node] =1;
+	first[node] = sz(euler);
+	euler.pb(node);
+	height[node] = h;
+		
+	for(int to:adj[node])
+	{
+		if(vis[to]==0)
+		{
+			dfs(to, h+1);
+			euler.pb(node);
+		}
+	}
+}
+void build(int node, int start, int end)
+{
+	if(start==end)
+	{
+		segtree[node] = euler[start];
+	}
+	else
+	{
+		int mid = (start+end)/2;
+		
+		build(2*node, start, mid);
+		build(2*node+1, mid+1, end);
+		int l = segtree[2*node], r = segtree[2*node+1];
+		segtree[node] = (height[l] < height[r]) ? l:r;
+	}
+}
+
+int query(int node, int start, int end, int l, int r)
+{
+	if(start>r || end<l)
+	return -1;
+	if(start>=l && end<=r)
+	return segtree[node];
+	
+	int mid  = (start+end)/2;
+	
+	int lnode = query(2*node, start, mid, l, r);
+	int rnode = query(2*node+1, mid+1, end, l, r);
+	if(lnode==-1)	return rnode;
+	if(rnode==-1)	return lnode;
+	
+	return (height[lnode]<height[rnode]) ? lnode:rnode;
+}
+int lca(int a, int b)
+{
+	int left = first[a], right = first[b];
+	if(left>right)	swap(left, right);
+	return query(1, 1, sz(euler)-1, left, right);	
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+    	cin.tie(NULL);	  //remove in interactive problems
+			
+	int t; cin>>t;
+	while(t--)
+	{
+		int n;
+		cin>>n;
+		int x, y;
+		init(n);
+		
+		for(int i=0; i<n-1; i++)
+		{
+			cin>>x>>y;
+			adj[x].pb(y);
+			adj[y].pb(x);	
+		}
+		dfs(1, 0);
+		// for(int i=1; i<sz(euler); i++)cout<<euler[i]<<" ";
+		// cout<<'\n';
+// 		
+		// for(int i=1; i<=n; i++)cout<<first[i]<<" ";		
+
+		build(1, 1, sz(euler)-1);
+		cout<<lca(4, 5);
+		
+		
+		
+	}
+		
+				
+    return 0;
+}
