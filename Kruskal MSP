@@ -1,0 +1,93 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+#define inf 2e18
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x.size())
+// #define int long long
+
+const ll N = 2e5+1;
+
+vector<ll> par, rnk;
+void init(int n, int m)
+{
+	par.resize(n+1);
+	rnk.assign(n+1, 0);	
+	for(ll i=0; i<=n; i++)par[i] = i;
+}
+
+ll find_set(ll x)
+{
+	if(x==par[x])	return x;
+	return par[x] = find_set(par[x]);
+}
+
+void union_sets(ll  a, ll b)
+{
+	a = find_set(a);
+	b = find_set(b);
+	if(a!=b)
+	{
+		if(rnk[a]<rnk[b])	swap(a, b);
+		par[b] = a;
+		if(rnk[a]==rnk[b])	rnk[a]++;
+	}
+}
+
+ll func(pair<ll, pair<ll, ll>>adj[], int m)
+{
+	ll x, y, w;
+	ll maxx=0;
+	for(ll i=0; i<m; i++)
+	{
+		x = adj[i].se.fi;
+		y =  adj[i].se.se;
+		w = adj[i].fi;
+		
+		if(find_set(x)!=find_set(y))
+		{
+			union_sets(x, y);
+			maxx+=w;
+		}
+		
+	}
+	return  maxx;
+}
+int main()
+{
+	ll t; cin>>t;
+	while(t--)
+	{
+		ll n, m; 
+		cin>>n>>m;
+		init(n, m);
+		ll x, y, w;
+		
+		pair<ll, pll>adj[m];
+		for(int i=0; i<m; i++)
+		{
+			cin>>x>>y>>w;
+			adj[i].fi = w;
+			adj[i].se.se = y;
+			adj[i].se.fi = x;
+		}
+		// sort(adj,adj+m, greater<pair<ll, pll>>());  // for maximum spanning tree
+		sort(adj, adj+m);
+		
+		
+		ll ans = func(adj, m);
+		cout<<ans<<endl;
+		
+		
+		
+	}
+}
