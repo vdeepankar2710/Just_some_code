@@ -1,0 +1,29 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ull unsigned long long
+#define MAX 100001
+#define mod 1000000007
+// #define mod 998244353
+#define pb push_back
+#define fi first
+#define se second
+#define inf 2e18
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define all(x) (x).begin(), (x).end()
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int t; cin>>t;
+    while(t--)
+    {
+        
+    
+    }
+        
+    return 0;
+}
